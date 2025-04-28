@@ -78,7 +78,6 @@ export default function CreateNotes({ note, socket, roomID }) {
   }, [socket]);
   
 
-
   const updateTitle = (e) => {
     const newTitle = e.target.value;
     setNoteData((prev) => ({ ...prev, title: newTitle }));
@@ -158,7 +157,6 @@ export default function CreateNotes({ note, socket, roomID }) {
     };
   }, [socket]);
   
-  
 
   const deleteElement = (id) => {
     if (noteData.elements.length > 1) {
@@ -218,9 +216,6 @@ export default function CreateNotes({ note, socket, roomID }) {
       });
     }, 500);
   };
-  
-  
-  
 
   return (
     <Box

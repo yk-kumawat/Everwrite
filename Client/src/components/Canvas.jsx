@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
-import ReactCanvasDraw from "react-canvas-draw";
+import { ReactSketchCanvas } from "react-sketch-canvas";
 
 const Canvas = ({
   id,
@@ -27,7 +27,7 @@ const Canvas = ({
   useEffect(() => {
     if (canvasRef.current && canvasData) {
       setTimeout(() => {
-        canvasRef.current.loadSaveData(canvasData, true);
+        canvasRef.current.loadPaths(JSON.parse(canvasData));
       }, 100);
     }
   }, [canvasData]);
@@ -47,15 +47,16 @@ const Canvas = ({
     };
   }, [socket, id]);
 
-  const saveCanvasData = () => {
+  const saveCanvasData = async () => {
     if (canvasRef.current) {
-      const drawingData = canvasRef.current.getSaveData();
+      const drawingData = await canvasRef.current.exportPaths();
+      const drawingDataString = JSON.stringify(drawingData);
 
-      setCanvasData(drawingData);
-      updateElementContent(id, drawingData);
+      setCanvasData(drawingDataString);
+      updateElementContent(id, drawingDataString);
 
       if (socket) {
-        socket.emit("canvasChange", { roomID, id, content: drawingData });
+        socket.emit("canvasChange", { roomID, id, content: drawingDataString });
       }
     }
   };
@@ -75,19 +76,20 @@ const Canvas = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Drawing Canvas */}
-      <ReactCanvasDraw
+      <ReactSketchCanvas
         ref={canvasRef}
         backgroundColor="#1e1e1e"
-        brushColor={brushColor}
-        brushRadius={brushSize}
-        canvasWidth={902}
-        canvasHeight={490}
-        hideGrid={true}
-        lazyRadius={0}
-        className="hover:border rounded"
-        immediateLoading={true} // Important to ensure it loads data immediately
-        saveData={canvasData}
-        onChange={saveCanvasData}
+        strokeColor={brushColor}
+        strokeWidth={brushSize}
+        width="902px"
+        height="490px"
+        style={{
+          borderRadius: "5px",
+          overflow: "hidden",
+          backgroundColor: "#1e1e1e",
+        }}
+        onStroke={() => saveCanvasData()}
+        withTimestamp={true}
       />
 
       {/* Clear Canvas Button */}
@@ -96,19 +98,18 @@ const Canvas = ({
         color="warning"
         onClick={() => {
           if (canvasRef.current) {
-            canvasRef.current.clear(); // Clear the actual canvas
+            canvasRef.current.clearCanvas();
 
-            const emptyCanvasData = JSON.stringify({ lines: [] }); // Ensures valid JSON
-            setCanvasData(emptyCanvasData); // Update local state
-
-            updateElementContent(id, emptyCanvasData); // Sync with backend/state
+            const emptyCanvasData = JSON.stringify([]); // Sketch canvas expects empty array
+            setCanvasData(emptyCanvasData);
+            updateElementContent(id, emptyCanvasData);
 
             if (socket) {
               socket.emit("canvasChange", {
                 roomID,
                 id,
                 content: emptyCanvasData,
-              }); // Sync with other users
+              });
             }
           }
         }}
