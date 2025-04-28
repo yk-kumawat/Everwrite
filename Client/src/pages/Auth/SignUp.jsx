@@ -54,7 +54,7 @@ const SignUp = () => {
     console.log(formData);
     e.preventDefault();
     try {
-        const response = await axios.post("http://127.0.0.1:8000/auth/signup", formData);
+        const response = await axios.post("https://py.inventorysolutions.in/auth/signup", formData);
         console.log(response.data);  // Ensure response exists before accessing `.data`
         toast.success('Sign Up Successfull');
     } catch (error) {

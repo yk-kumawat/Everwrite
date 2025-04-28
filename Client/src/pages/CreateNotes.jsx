@@ -191,7 +191,7 @@ export default function CreateNotes({ note, socket, roomID }) {
 
         try {
           if (note) {
-            axios.put("http://127.0.0.1:8000/notes/updateNote", {
+            axios.put("https://py.inventorysolutions.in/notes/updateNote", {
               email: userEmail,
               title: prevNoteData.title,
               elements: prevNoteData.elements,
@@ -199,7 +199,7 @@ export default function CreateNotes({ note, socket, roomID }) {
             });
             toast.success("Note Updated Successfully");
           } else {
-            axios.post("http://127.0.0.1:8000/notes/createNotes", {
+            axios.post("https://py.inventorysolutions.in/notes/createNotes", {
               email: userEmail,
               title: prevNoteData.title,
               elements: prevNoteData.elements,

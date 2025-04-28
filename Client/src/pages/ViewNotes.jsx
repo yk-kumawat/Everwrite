@@ -17,7 +17,7 @@ export default function ViewNote() {
 
   const fetchNote = async (email, title) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/notes/getNotes?email=${email}`);
+      const response = await axios.get(`https://py.inventorysolutions.in/notes/getNotes?email=${email}`);
       const foundNote = response.data.notes.find((note) => note.title === title);
       setNote(foundNote || null);
     } catch (error) {

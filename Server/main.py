@@ -7,7 +7,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Allow requests from your React app
+    allow_origins=["https://everwrite-pi.vercel.app/"],  # Allow requests from your React app
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers

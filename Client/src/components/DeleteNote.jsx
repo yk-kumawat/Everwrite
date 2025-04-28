@@ -13,7 +13,7 @@ const DeleteNote = ({ title, onDelete }) => {
     }
 
     try {
-      await axios.delete(`http://127.0.0.1:8000/notes/deleteNote`, {
+      await axios.delete(`https://py.inventorysolutions.in/notes/deleteNote`, {
         data: { email, title }, // Pass email and title in request body
       });
       onDelete(title); // Update the UI after successful deletion

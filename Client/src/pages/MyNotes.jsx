@@ -40,7 +40,7 @@ export default function MyNotes() {
 
   const fetchNotes = async (email) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/notes/getNotes?email=${email}`);
+      const response = await axios.get(`https://py.inventorysolutions.in/notes/getNotes?email=${email}`);
       setNotes(response.data.notes); // Store fetched notes
     } catch (error) {
       console.error("Error fetching notes:", error);

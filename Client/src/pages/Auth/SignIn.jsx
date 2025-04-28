@@ -59,7 +59,7 @@ const SignIn = () => {
         }
         console.log(formData);
         try {
-            const response = await axios.post("http://127.0.0.1:8000/auth/signin", formData);
+            const response = await axios.post("https://py.inventorysolutions.in/auth/signin", formData);
             console.log(response.data);
             login(response.data.token);
             toast.success('Login Successfull');
